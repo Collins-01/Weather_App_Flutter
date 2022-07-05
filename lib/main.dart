@@ -1,29 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:network_client/network_client.dart';
-import 'package:weather_app_flutter/presentation/home/home_view.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:weather_app_flutter/app.dart';
 
-void main() {
-  runApp(
-    const MyApp(),
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
   );
   NetworkClient.init(
     'https://v1.nocodeapi.com',
+    enableLogging: true,
     headers: {},
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeView(),
-    );
-  }
+  HydratedBlocOverrides.runZoned(
+    () => runApp(const MyApp()),
+    storage: storage,
+  );
 }

@@ -1,18 +1,28 @@
-class Weather {
+import 'package:equatable/equatable.dart';
+
+class Weather extends Equatable {
   final double lattitude;
   final double longitude;
   final String description;
   final String main;
   final double temprature;
   final int humidity;
-  Weather({
-    this.description = '',
-    this.humidity = 0,
-    this.lattitude = 0.0,
-    this.longitude = 0.0,
-    this.main = '',
-    this.temprature = 0,
+  const Weather({
+    required this.description,
+    required this.humidity,
+    required this.lattitude,
+    required this.longitude,
+    required this.main,
+    required this.temprature,
   });
+
+  static const empty = Weather(
+      temprature: 0,
+      main: '',
+      longitude: 0.0,
+      description: '',
+      humidity: 0,
+      lattitude: 0.0);
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         description: json['weather'][0]['description'],
@@ -48,4 +58,8 @@ class Weather {
       temprature: temprature ?? this.temprature,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [longitude, main, description, lattitude, temprature, humidity];
 }
