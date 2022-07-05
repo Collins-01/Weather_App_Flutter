@@ -29,7 +29,9 @@ class HomeView extends StatelessWidget {
           children: [
             TextField(
               controller: _controller,
-              decoration: const InputDecoration(labelText: 'Search'),
+              decoration: const InputDecoration(
+                labelText: 'Search',
+              ),
             ),
             Expanded(
               child: BlocConsumer<HomeCubit, HomeState>(
@@ -86,8 +88,12 @@ class HomeView extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.search),
         onPressed: () {
-          WeatherService().getWeather('China');
+          if (_controller.text.isNotEmpty) {
+            context.read<HomeCubit>().fetchWeather(_controller.text);
+          }
+          return;
         },
       ),
     );
