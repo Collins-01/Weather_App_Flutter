@@ -16,7 +16,6 @@ extension HomeStatusX on HomeStatus {
         return HomeStatus.initial;
       case 'failure':
         return HomeStatus.failure;
-
       case 'success':
         return HomeStatus.failure;
       default:
@@ -26,10 +25,14 @@ extension HomeStatusX on HomeStatus {
 }
 
 class HomeState extends Equatable {
-  const HomeState({this.status = HomeStatus.initial, Weather? weather})
+  const HomeState(
+      {this.status = HomeStatus.initial,
+      Weather? weather,
+      this.errorMessage = ''})
       : weather = weather ?? Weather.empty;
   final HomeStatus status;
   final Weather weather;
+  final String errorMessage;
   @override
   List<Object?> get props => [weather, status];
 
@@ -38,10 +41,12 @@ class HomeState extends Equatable {
         'weather': weather.toJson(),
       };
 
-  HomeState copyWith({HomeStatus? status, Weather? weather}) {
+  HomeState copyWith(
+      {HomeStatus? status, Weather? weather, String? errorMessage}) {
     return HomeState(
       status: status ?? this.status,
       weather: weather ?? this.weather,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 

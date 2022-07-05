@@ -17,8 +17,13 @@ class HomeCubit extends HydratedCubit<HomeState> {
       emit(state.copyWith(status: HomeStatus.loading));
       var res = await _weatherService.getWeather(q);
       emit(state.copyWith(status: HomeStatus.success, weather: res));
-    } catch (e) {
-      emit(state.copyWith(status: HomeStatus.failure));
+    } on Failure catch (e) {
+      emit(
+        state.copyWith(
+          status: HomeStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
