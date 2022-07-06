@@ -37,7 +37,7 @@ class HomeState extends Equatable {
   List<Object?> get props => [weather, status];
 
   Map<String, dynamic> toJson() => {
-        'status': status.name,
+        // 'status': status.name,
         'weather': weather.toJson(),
       };
 
@@ -51,7 +51,7 @@ class HomeState extends Equatable {
   }
 
   factory HomeState.fromJson(Map<String, dynamic> json) => HomeState(
-        status: json['status'],
+        // status: json['status'],
         weather: Weather.fromJson(
           json['weather'],
         ),
