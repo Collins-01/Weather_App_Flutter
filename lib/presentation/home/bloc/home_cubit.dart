@@ -1,5 +1,6 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:network_client/network_client.dart';
+import 'package:weather_app_flutter/core/models/weather_model.dart';
 import 'package:weather_app_flutter/core/services/weather_service.dart';
 import 'package:weather_app_flutter/presentation/home/bloc/home_state.dart';
 
@@ -27,13 +28,19 @@ class HomeCubit extends HydratedCubit<HomeState> {
     }
   }
 
+  late Weather cachedWeather;
+
   @override
   HomeState fromJson(Map<String, dynamic> json) {
+    print("From Jsom: $json ");
+    final homeJson = HomeState.fromJson(json);
+    state.copyWith(status: HomeStatus.loading);
     return HomeState.fromJson(json);
   }
 
   @override
   Map<String, dynamic> toJson(HomeState state) {
+    print("To Json: ${state.toJson()}");
     return state.toJson();
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app_flutter/presentation/home/bloc/home_bloc_test_view.dart';
 import 'package:weather_app_flutter/presentation/home/home_view.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -12,10 +13,12 @@ class SplashScreenPage extends StatefulWidget {
 class _SplashScreenPageState extends State<SplashScreenPage> {
   @override
   void initState() {
-    Future.delayed(const Duration(milliseconds: 1500));
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (_) => const HomePage()));
     super.initState();
+    Future.delayed(
+      const Duration(milliseconds: 1700),
+      () => Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const HomePageBlocTest())),
+    );
   }
 
   @override
@@ -25,9 +28,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       body: Center(
         child: Text(
           "Weather App Flutter",
-          style: GoogleFonts.lato(
-              // color: COlors
-              ),
+          style: GoogleFonts.grenze(
+            color: Colors.white,
+          ),
         ),
       ),
     );
