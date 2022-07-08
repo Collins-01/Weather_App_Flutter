@@ -11,7 +11,7 @@ class HomeCubit extends HydratedCubit<HomeState> {
             WeatherService(
               networkClient: NetworkClient(),
             ),
-        super(const HomeState());
+        super(const HomeState(weather: Weather.empty));
 
   Future fetchWeather(String q) async {
     try {
@@ -33,14 +33,13 @@ class HomeCubit extends HydratedCubit<HomeState> {
   @override
   HomeState fromJson(Map<String, dynamic> json) {
     print("From Jsom: $json ");
-    final homeJson = HomeState.fromJson(json);
     state.copyWith(status: HomeStatus.loading);
-    return HomeState.fromJson(json);
+    return HomeState.fromMap(json);
   }
 
   @override
   Map<String, dynamic> toJson(HomeState state) {
-    print("To Json: ${state.toJson()}");
-    return state.toJson();
+    print("To Json: ${state.toMap()}");
+    return state.toMap();
   }
 }

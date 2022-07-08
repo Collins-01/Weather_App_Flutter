@@ -7,21 +7,18 @@ import 'package:weather_app_flutter/presentation/home/bloc/home_state.dart';
 
 class HomeBlocTest extends HydratedBloc<HomeEvents, HomeState> {
   final WeatherService _weatherService;
-  HomeBlocTest({WeatherService? weatherService, Weather? cachedWeather})
+  HomeBlocTest({WeatherService? weatherService})
       : _weatherService = weatherService ?? WeatherService(),
-        _cachedWeather = cachedWeather,
         super(const HomeState(weather: Weather.empty)) {
     on<OnHomePageLoadEvent>(_onHomePageLoadEvent);
     on<HomePageSearchEvent>(_onHomePageSearchEvent);
   }
 
-  Weather? _cachedWeather;
   _onHomePageLoadEvent(
     OnHomePageLoadEvent event,
     Emitter emit,
   ) {
     Future.delayed(const Duration(seconds: 1));
-    emit(state.copyWith(weather: _cachedWeather));
   }
 
   _onHomePageSearchEvent(HomePageSearchEvent event, Emitter emit) async {
@@ -41,15 +38,11 @@ class HomeBlocTest extends HydratedBloc<HomeEvents, HomeState> {
 
   @override
   HomeState fromJson(Map<String, dynamic> json) {
-    print(HomeState.fromJson(json).weather.toJson());
-    final decodedData = HomeState.fromJson(json);
-    print(decodedData.toJson());
-    state.copyWith(weather: decodedData.weather);
-    return HomeState.fromJson(json);
+    return HomeState.fromMap(json);
   }
 
   @override
   Map<String, dynamic> toJson(HomeState state) {
-    return state.toJson();
+    return state.toMap();
   }
 }
