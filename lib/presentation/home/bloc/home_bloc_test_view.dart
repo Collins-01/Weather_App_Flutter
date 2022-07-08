@@ -138,12 +138,22 @@ class HomeViewBlocTest extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.search),
         onPressed: () {
-          if (_controller.text.isNotEmpty) {
-            // context.read<HomeCubit>().fetchWeather(_controller.text);
+          if (_controller.text.isEmpty) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text(
+                    "Pleaase provide a city!",
+                  ),
+                ),
+              );
+            return;
+          } else {
             final bloc = context.read<HomeBlocTest>();
             bloc.add(HomePageSearchEvent(_controller.text));
           }
-          return;
         },
       ),
     );
