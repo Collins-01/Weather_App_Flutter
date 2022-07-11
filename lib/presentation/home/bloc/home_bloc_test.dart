@@ -31,6 +31,7 @@ class HomeBlocTest extends HydratedBloc<HomeEvents, HomeState> {
         state.copyWith(
           status: HomeStatus.failure,
           errorMessage: e.message,
+          isNetworkConnectionError: e.isInternetConnectionError,
         ),
       );
     }

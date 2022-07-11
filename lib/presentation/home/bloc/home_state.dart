@@ -13,15 +13,16 @@ extension HomeStatusX on HomeStatus {
 }
 
 class HomeState extends Equatable {
-  const HomeState({
-    this.status = HomeStatus.initial,
-    required this.weather,
-    this.errorMessage = '',
-  });
+  const HomeState(
+      {this.status = HomeStatus.initial,
+      required this.weather,
+      this.errorMessage = '',
+      this.isNetworkConnectionError = false});
   // : weather = weather ?? Weather.empty;
   final HomeStatus status;
   final Weather weather;
   final String errorMessage;
+  final bool isNetworkConnectionError;
 
   @override
   List<Object?> get props => [weather, status];
@@ -34,13 +35,18 @@ class HomeState extends Equatable {
 
   String toJson() => jsonEncode(toMap());
 
-  HomeState copyWith(
-      {HomeStatus? status, Weather? weather, String? errorMessage}) {
+  HomeState copyWith({
+    HomeStatus? status,
+    Weather? weather,
+    String? errorMessage,
+    bool? isNetworkConnectionError,
+  }) {
     return HomeState(
-      status: status ?? this.status,
-      weather: weather ?? this.weather,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
+        status: status ?? this.status,
+        weather: weather ?? this.weather,
+        errorMessage: errorMessage ?? this.errorMessage,
+        isNetworkConnectionError:
+            isNetworkConnectionError ?? this.isNetworkConnectionError);
   }
 
   factory HomeState.fromMap(Map<String, dynamic> json) {
