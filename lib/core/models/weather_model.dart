@@ -8,6 +8,7 @@ class Weather extends Equatable {
   final double temprature;
   final int humidity;
   final double windSpeed;
+  final String name;
   const Weather(
       {required this.description,
       required this.humidity,
@@ -15,16 +16,19 @@ class Weather extends Equatable {
       required this.longitude,
       required this.main,
       required this.temprature,
+      required this.name,
       required this.windSpeed});
 
   static const empty = Weather(
-      temprature: 0,
-      main: '',
-      longitude: 0.0,
-      description: '',
-      humidity: 0,
-      windSpeed: 0.0,
-      lattitude: 0.0);
+    temprature: 0,
+    main: '',
+    longitude: 0.0,
+    description: '',
+    humidity: 0,
+    windSpeed: 0.0,
+    name: '__',
+    lattitude: 0.0,
+  );
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         description: json['weather'][0]['description'],
@@ -34,6 +38,7 @@ class Weather extends Equatable {
         longitude: json['coord']['lon'],
         main: json['weather'][0]['main'],
         windSpeed: json['wind']['speed'],
+        name: json['name'],
       );
   Map<String, dynamic> toJson() => {
         'description': description,
@@ -43,6 +48,7 @@ class Weather extends Equatable {
         'longitude': longitude,
         'main': main,
         'windSpeed': windSpeed,
+        'name': name,
       };
 
   Weather copyWith({
@@ -53,6 +59,7 @@ class Weather extends Equatable {
     double? longitude,
     String? main,
     double? windSpeed,
+    String? name,
   }) {
     return Weather(
       description: description ?? this.description,
@@ -62,6 +69,7 @@ class Weather extends Equatable {
       main: main ?? this.main,
       temprature: temprature ?? this.temprature,
       windSpeed: windSpeed ?? this.windSpeed,
+      name: name ?? this.name,
     );
   }
 
@@ -73,7 +81,8 @@ class Weather extends Equatable {
         lattitude,
         temprature,
         humidity,
-        windSpeed
+        windSpeed,
+        name,
       ];
 }
 

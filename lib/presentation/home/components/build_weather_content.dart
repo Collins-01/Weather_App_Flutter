@@ -22,6 +22,7 @@ class BuildWeatherContent extends StatelessWidget {
             // fontStyle: FontStyle.normal,
           ),
         ),
+        Text(weather.name),
         const Spacer(),
         Text(weather.main),
         const Spacer(),
