@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:weather_app_flutter/core/models/weather_model.dart';
 
@@ -8,47 +10,71 @@ extension HomeStatusX on HomeStatus {
   bool get isSuccess => this == HomeStatus.success;
   bool get isFailure => this == HomeStatus.failure;
   bool get isInitial => this == HomeStatus.initial;
-  HomeStatus toStatus(String value) {
-    switch (value) {
-      case 'loading':
-        return HomeStatus.loading;
-      case 'initial':
-        return HomeStatus.initial;
-      case 'failure':
-        return HomeStatus.failure;
-
-      case 'success':
-        return HomeStatus.failure;
-      default:
-        return HomeStatus.initial;
-    }
-  }
 }
 
 class HomeState extends Equatable {
-  const HomeState({this.status = HomeStatus.initial, Weather? weather})
-      : weather = weather ?? Weather.empty;
+  const HomeState(
+      {this.status = HomeStatus.initial,
+      required this.weather,
+      this.errorMessage = '',
+      this.isNetworkConnectionError = false});
+  // : weather = weather ?? Weather.empty;
   final HomeStatus status;
   final Weather weather;
+  final String errorMessage;
+  final bool isNetworkConnectionError;
+
   @override
   List<Object?> get props => [weather, status];
 
-  Map<String, dynamic> toJson() => {
-        'status': status.name,
+  Map<String, dynamic> toMap() => {
         'weather': weather.toJson(),
+        'errorMessage': errorMessage,
+        'status': status.name,
       };
 
-  HomeState copyWith({HomeStatus? status, Weather? weather}) {
+  String toJson() => jsonEncode(toMap());
+
+  HomeState copyWith({
+    HomeStatus? status,
+    Weather? weather,
+    String? errorMessage,
+    bool? isNetworkConnectionError,
+  }) {
     return HomeState(
-      status: status ?? this.status,
-      weather: weather ?? this.weather,
+        status: status ?? this.status,
+        weather: weather ?? this.weather,
+        errorMessage: errorMessage ?? this.errorMessage,
+        isNetworkConnectionError:
+            isNetworkConnectionError ?? this.isNetworkConnectionError);
+  }
+
+  factory HomeState.fromMap(Map<String, dynamic> json) {
+    HomeStatus toStatus(String value) {
+      switch (value) {
+        case 'loading':
+          return HomeStatus.loading;
+        case 'initial':
+          return HomeStatus.initial;
+        case 'failure':
+          return HomeStatus.failure;
+        case 'success':
+          return HomeStatus.failure;
+        default:
+          return HomeStatus.initial;
+      }
+    }
+
+    return HomeState(
+      errorMessage: json['errorMessage'],
+      status: toStatus(json['status']),
+      weather: Weather.fromJson(
+        json['weather'],
+      ),
     );
   }
 
-  factory HomeState.fromJson(Map<String, dynamic> json) => HomeState(
-        status: json['status'],
-        weather: Weather.fromJson(
-          json['weather'],
-        ),
-      );
+  factory HomeState.fromJson(String source) {
+    return HomeState.fromMap(jsonDecode(source));
+  }
 }

@@ -7,7 +7,7 @@ import 'package:weather_app_flutter/app.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final storage = await HydratedStorage.build(
-    storageDirectory: await getTemporaryDirectory(),
+    storageDirectory: await getApplicationDocumentsDirectory(),
   );
   NetworkClient.init(
     'https://v1.nocodeapi.com',
@@ -15,7 +15,9 @@ void main() async {
     headers: {},
   );
   HydratedBlocOverrides.runZoned(
-    () => runApp(const MyApp()),
+    () => runApp(
+      const MyApp(),
+    ),
     storage: storage,
   );
 }
